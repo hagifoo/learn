@@ -9,3 +9,12 @@ class Drink:
 
     def get_kind(self) -> int:
         return self._kind
+
+class Coke(Drink):
+    pass
+
+class DietCoke(Drink):
+    pass
+
+class Tea(Drink):
+    pass

@@ -1,4 +1,8 @@
+from typing import Type
+from drink import Coke
+from drink import DietCoke
 from drink import Drink
+from drink import Tea
 
 
 class VendingMachine:
@@ -12,22 +16,22 @@ class VendingMachine:
 
     # 投入金額. 100円と500円のみ受け付ける.
     # return. ジュース or None
-    def buy(self, payment: int, kind_of_drink: int):
+    def buy(self, payment: int, kind_of_drink: Type[Drink]):
 
         if (payment != 100) and (payment != 500):
             self._change += payment
             return None
 
-        if (kind_of_drink == Drink.COKE) and (self._quantity_of_coke == 0):
+        if (kind_of_drink == Coke) and (self._quantity_of_coke == 0):
             self._change += payment
             return None
 
-        if (kind_of_drink == Drink.DIET_COKE) and \
+        if (kind_of_drink == DietCoke) and \
                 (self._quantity_of_diet_coke == 0):
             self._change += payment
             return None
 
-        if (kind_of_drink == Drink.TEA) and (self._quantity_of_tea == 0):
+        if (kind_of_drink == Tea) and (self._quantity_of_tea == 0):
             self._change += payment
             return None
 
@@ -42,13 +46,13 @@ class VendingMachine:
             self._change += (payment - 100)
             self._number_of_100_yen -= (payment - 100) / 100
 
-        if kind_of_drink == Drink.COKE:
+        if kind_of_drink == Coke:
             self._quantity_of_coke -= 1
 
-        if kind_of_drink == Drink.DIET_COKE:
+        if kind_of_drink == DietCoke:
             self._quantity_of_diet_coke -= 1
 
-        if kind_of_drink == Drink.TEA:
+        if kind_of_drink == Tea:
             self._quantity_of_tea -= 1
 
         return Drink(kind_of_drink)
