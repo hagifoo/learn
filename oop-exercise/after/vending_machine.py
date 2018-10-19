@@ -11,9 +11,11 @@ from change_machine import ChangeMachine
 class VendingMachine:
 
     def __init__(self):
-        self._cokes = DrinkCollection([Coke() for i in range(5)])
-        self._diet_cokes = DrinkCollection([DietCoke() for i in range(5)])
-        self._teas = DrinkCollection([Tea() for i in range(5)])
+        self._drink_collections = {
+            Coke: DrinkCollection([Coke() for i in range(5)]),
+            DietCoke: DrinkCollection([DietCoke() for i in range(5)]),
+            Tea: DrinkCollection([Tea() for i in range(5)])
+        }
         self._change_machine = ChangeMachine()
         for i in range(10):
             self._change_machine.input(Yen100Coin())
@@ -29,16 +31,10 @@ class VendingMachine:
             return None
 
     def _buy(self, payment: int, kind_of_drink: Type[Drink]):
-        self._change = self._change_machine.refund(payment, 100)
+        drink = self._drink_collections[kind_of_drink].pull()
+        self._change = self._change_machine.refund(payment, drink.price())
 
-        if kind_of_drink == Coke:
-            return self._cokes.pull()
-
-        if kind_of_drink == DietCoke:
-            return self._diet_cokes.pull()
-
-        if kind_of_drink == Tea:
-            return self._teas.pull()
+        return drink
 
     def refund(self):
         result = self._change

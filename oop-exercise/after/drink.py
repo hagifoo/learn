@@ -1,6 +1,7 @@
 
 class Drink:
-    pass
+    def price(self):
+        return 100
 
 class Coke(Drink):
     pass
