@@ -21,11 +21,13 @@ class VendingMachine:
         if (kind_of_drink == Drink.COKE) and (self._quantity_of_coke == 0):
             self._change += payment
             return None
-        elif (kind_of_drink == Drink.DIET_COKE) and \
+
+        if (kind_of_drink == Drink.DIET_COKE) and \
                 (self._quantity_of_diet_coke == 0):
             self._change += payment
             return None
-        elif (kind_of_drink == Drink.TEA) and (self._quantity_of_tea == 0):
+
+        if (kind_of_drink == Drink.TEA) and (self._quantity_of_tea == 0):
             self._change += payment
             return None
 
@@ -35,15 +37,18 @@ class VendingMachine:
 
         if payment == 100:
             self._number_of_100_yen += 1
-        elif payment == 500:
+
+        if payment == 500:
             self._change += (payment - 100)
             self._number_of_100_yen -= (payment - 100) / 100
 
         if kind_of_drink == Drink.COKE:
             self._quantity_of_coke -= 1
-        elif kind_of_drink == Drink.DIET_COKE:
+
+        if kind_of_drink == Drink.DIET_COKE:
             self._quantity_of_diet_coke -= 1
-        else:
+
+        if kind_of_drink == Drink.TEA:
             self._quantity_of_tea -= 1
 
         return Drink(kind_of_drink)
