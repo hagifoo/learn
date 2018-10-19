@@ -1,9 +1,11 @@
 from typing import Type
+from currency import Yen100Coin
 from drink import Coke
 from drink import DietCoke
 from drink import Drink
 from drink import Tea
 from drink_collection import DrinkCollection
+from change_machine import ChangeMachine
 
 
 class VendingMachine:
@@ -12,7 +14,9 @@ class VendingMachine:
         self._cokes = DrinkCollection([Coke() for i in range(5)])
         self._diet_cokes = DrinkCollection([DietCoke() for i in range(5)])
         self._teas = DrinkCollection([Tea() for i in range(5)])
-        self._number_of_100_yen = 10
+        self._change_machine = ChangeMachine()
+        for i in range(10):
+            self._change_machine.input(Yen100Coin())
         self._change = 0
 
     # 投入金額. 100円と500円のみ受け付ける.
@@ -25,20 +29,7 @@ class VendingMachine:
             return None
 
     def _buy(self, payment: int, kind_of_drink: Type[Drink]):
-        if (payment != 100) and (payment != 500):
-            self._change += payment
-            return None
-
-        if payment == 500 and self._number_of_100_yen < 4:
-            self._change += payment
-            return None
-
-        if payment == 100:
-            self._number_of_100_yen += 1
-
-        if payment == 500:
-            self._change += (payment - 100)
-            self._number_of_100_yen -= (payment - 100) / 100
+        self._change = self._change_machine.refund(payment, 100)
 
         if kind_of_drink == Coke:
             return self._cokes.pull()
