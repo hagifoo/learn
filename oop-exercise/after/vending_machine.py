@@ -4,19 +4,20 @@ from drink import Coke
 from drink import DietCoke
 from drink import Drink
 from drink import Tea
-from drink_collection import DrinkCollection
+from drink_store import DrinkStore
 from change_machine import ChangeMachine
 
 
 class VendingMachine:
 
     def __init__(self):
-        self._drink_collections = {
-            Coke: DrinkCollection([Coke() for i in range(5)]),
-            DietCoke: DrinkCollection([DietCoke() for i in range(5)]),
-            Tea: DrinkCollection([Tea() for i in range(5)])
-        }
+        self._drink_store = DrinkStore()
         self._change_machine = ChangeMachine()
+
+        for i in range(5):
+            self._drink_store.store(Coke())
+            self._drink_store.store(DietCoke())
+            self._drink_store.store(Tea())
         for i in range(10):
             self._change_machine.input(Yen100Coin())
         self._change = 0
@@ -31,7 +32,7 @@ class VendingMachine:
             return None
 
     def _buy(self, payment: int, kind_of_drink: Type[Drink]):
-        drink = self._drink_collections[kind_of_drink].pull()
+        drink = self._drink_store.pull(kind_of_drink)
         self._change = self._change_machine.refund(payment, drink.price())
 
         return drink
